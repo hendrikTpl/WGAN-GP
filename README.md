@@ -7,7 +7,8 @@ pytorch implementation of wgan-gp
 - experiment logs saved in `./EXP_LOGS/log_<exp_name>.txt`
 
 # Sample Results
- - TODO
+## MNIST (100 epochs, batch_size=512)
+ - ![IMNIST](results/mnist_100_512.png)
 
 ## References
 - paper: https://arxiv.org/pdf/1704.00028.pdf

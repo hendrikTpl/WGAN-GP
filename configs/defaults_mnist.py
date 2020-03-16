@@ -1,7 +1,7 @@
 
 gpu_devices = "7"
 random_seed = 13
-num_epochs = 10
+num_epochs = 100
 NUM_DISC_STEPS = 5
 
 lr=1e-4
