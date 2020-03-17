@@ -1,3 +1,4 @@
 *.pyc
 VIZ/*
 data/*
+saved_models/*

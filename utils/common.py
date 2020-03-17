@@ -30,7 +30,15 @@ def get_dataloader(name, dataroot, batch_size, imsize=28):
                         transforms.Resize((imsize, imsize)),
                         transforms.ToTensor(),
                     ]))
-        DL = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
+    elif name == "cifar10":
+        dataset = torchvision.datasets.CIFAR10(root=dataroot,
+                    download=True,
+                    transform=transforms.Compose([
+                        transforms.Resize((imsize, imsize)),
+                        transforms.ToTensor(),
+                    ]))
+
+    DL = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
                     shuffle=True, num_workers=8,
                     drop_last=True)
-        return DL
+    return DL

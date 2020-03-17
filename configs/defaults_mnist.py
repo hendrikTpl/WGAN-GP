@@ -11,3 +11,7 @@ beta2 = 0.9
 batch_size = 512
 
 loss_names = ["D_cost", "Wasserstein_D", "G_cost"]
+
+dataroot = "data/mnist"
+name = "mnist"
+imsize=28

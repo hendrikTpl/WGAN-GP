@@ -11,24 +11,30 @@ from utils.visualizations import *
 exp_name = sys.argv[1]
 C = importlib.import_module(f"configs.{sys.argv[1]}")
 
+# import the models based on image resolution
+fname = f"networks.models_{C.imsize}x{C.imsize}"
+M = importlib.import_module(fname)
+
 set_cuda_devices(vals=C.gpu_devices)
 disable_warnings()
 set_seed(seed=C.random_seed)
 device = torch.device("cuda")
 
 
-netG = Generator().to(device)
-netD = Discriminator().to(device)
+netG = M.Generator().to(device)
+netD = M.Discriminator().to(device)
 optimizerD = torch.optim.Adam(netD.parameters(), lr=C.lr, betas=(C.beta1, C.beta2))
 optimizerG = torch.optim.Adam(netG.parameters(), lr=C.lr, betas=(C.beta1, C.beta2))
 
-DL = get_dataloader(name="mnist", dataroot="data/mnist", batch_size=C.batch_size)
+DL = get_dataloader(name=C.name, dataroot=C.dataroot, batch_size=C.batch_size, imsize=C.imsize)
 
 log_file = f"EXP_LOGS/log_{exp_name}.txt"
 if not os.path.exists(log_file):
     with open(log_file, 'w'): pass
 if not os.path.exists(f"VIZ/{exp_name}"):
     os.makedirs(f"VIZ/{exp_name}")
+if not os.path.exists(f"saved_models/{exp_name}"):
+    os.makedirs(f"saved_models/{exp_name}")
 
 # initialize the loss dict to empty lists
 L = {}
@@ -37,8 +43,6 @@ for n in C.loss_names:
 
 for epoch in range(C.num_epochs):
     for idx, batch_data in enumerate(DL, 0):
-        # pdb.set_trace()/
-
         for d_iter in range(C.NUM_DISC_STEPS):
             x_in = batch_data[0].to(device)
             batch_size = x_in.shape[0]
@@ -84,5 +88,10 @@ for epoch in range(C.num_epochs):
             f.write("\n"+log)
         
         if idx%50 == 0:
-            disp_images(fake[0:20], f"VIZ/{exp_name}/fake_{epoch}_{idx}.png", 5)
+            disp_images(fake[0:20], f"VIZ/{exp_name}/fake_{epoch}_{idx}.png", 5, imsize=C.imsize)
 
+    # save model
+    if (epoch % 10) == 0:
+        path = f"saved_models/{exp_name}/"
+        torch.save(netG.state_dict(), path+f"netG_{epoch}.pth")
+        torch.save(netD.state_dict(), path+f"netD_{epoch}.pth")

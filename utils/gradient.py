@@ -6,6 +6,7 @@ def calc_gradient_penalty(netD, real_data, fake_data, LAMBDA=10):
     device = real_data.device
     batch_size = real_data.shape[0]
     real_data = real_data.view((batch_size,-1))
+    fake_data = fake_data.view((batch_size,-1))
     alpha = torch.rand(batch_size, 1)
     alpha = alpha.expand(real_data.size()).to(device)
     interpolates = alpha * real_data + ((1 - alpha) * fake_data)

@@ -8,7 +8,12 @@ pytorch implementation of wgan-gp
 
 # Sample Results
 ## MNIST (100 epochs, batch_size=512)
- - ![IMNIST](results/mnist_100_512.png)
+- Training command to reproduce: `python3 train.py defaults_mnist`
+![IMNIST](results/mnist_100_512.png)
+
+## CIFAR (250 epochs, batch_size=64)
+- Training command to reproduce: `python3 train.py defaults_cifar10`
+![I_CIFAR10](results/cifar10_250_64.png)
 
 ## References
 - paper: https://arxiv.org/pdf/1704.00028.pdf
